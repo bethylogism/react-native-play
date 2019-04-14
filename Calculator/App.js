@@ -6,7 +6,7 @@ export default class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      result: '',
+      result: '0',
       calculation: ''
     }
     this.operations = ['DEL', '+', '-', '*', '/']
@@ -73,7 +73,12 @@ export default class App extends React.Component {
   render() {
 
     let rows = []
-    let nums = [[1, 2, 3], [4, 5, 6], [7, 8, 9], ['.', 0, '=']]
+    let nums = [
+      [7, 8, 9],
+      [4, 5, 6],
+      [1, 2, 3],
+      ['.', 0, '=']
+    ]
     for (let i = 0; i <4; i++) {
       let row = []
       for (let j = 0; j <3; j++) {
@@ -87,7 +92,7 @@ export default class App extends React.Component {
           </TouchableOpacity>
         )
       }
-      rows.push(<View style={styles.row}>{row}</View>)
+      rows.push(<View key={i} style={styles.row}>{row}</View>)
     }
 
     
@@ -141,25 +146,25 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: 45,
-    color: 'black',
+    color: 'white',
   },
   result: {
     flex: 2,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'flex-end'
   },
   resultText: {
-    fontSize: 30,
-    color: 'white'
+    fontSize: 40,
+    color: '#636363'
   },
   calculationText: {
-    fontSize: 24,
+    fontSize: 34,
     color: 'white'
   },
   calculation: {
     flex: 1,
-    backgroundColor: 'green',
+    backgroundColor: '#008080',
     justifyContent: 'center',
     alignItems: 'flex-end'
   },
@@ -169,11 +174,11 @@ const styles = StyleSheet.create({
   },
   numbers: {
     flex: 3,
-    backgroundColor: 'yellow'
+    backgroundColor: '#434343'
   },
   operations: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: '#636363',
     justifyContent: 'space-around'
   },
   operatorText: {
