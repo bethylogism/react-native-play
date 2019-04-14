@@ -9,18 +9,35 @@ export default class App extends React.Component {
       result: '',
       calculation: ''
     }
+    this.operations = ['DEL', '+', '-', '*', '/']
   }
 
   calculateResult() {
     const text = this.state.result
-    // parse the text 
-
+    // parse the text
+    this.setState({
+      calculation: eval(text)
+    })
   }
+
+  // validate the input 
+  validate() {
+    const text = this.state.result 
+    switch(text.slice(-1)) {
+      case '+':
+      case '-':
+      case '*':
+      case '/':
+        return false 
+    }
+    return true
+  }
+
 
   onBtnPress(text) {
     console.log(`You tapped ${text}`)
     if (text == '=') {
-      return this.calculateResult(this.state.resultText)
+      return this.validate() && this.calculateResult(this.state.result)
     }
     this.setState({
       result: this.state.result + text,
@@ -34,8 +51,22 @@ export default class App extends React.Component {
         let text = this.state.result.split('')
         text.pop()
         this.setState({
-          result: text.join('')
+          result: text.join(''),
+          calculation: text.join('')
         })
+        break
+      case '+':
+      case '-':
+      case '*':
+      case '/':
+      const lastChar = this.state.result.split('').pop()
+        if(this.operations.indexOf(lastChar) > 0) return 
+        if (this.state.text == '') return 
+        this.setState({
+          result: this.state.result + operation,
+          calculation: this.state.result + operation
+        })
+
     }
   }
 
@@ -48,6 +79,7 @@ export default class App extends React.Component {
       for (let j = 0; j <3; j++) {
         row.push(
           <TouchableOpacity 
+            // pass the node's associated value to on press function 
             onPress={() => this.onBtnPress(nums[i][j])}
             style={styles.btn}
             key={nums[i][j]}>
@@ -58,14 +90,14 @@ export default class App extends React.Component {
       rows.push(<View style={styles.row}>{row}</View>)
     }
 
-    let operations = ['DEL', '+', '-', '*', '/']
+    
     let operators = []
-    for (let i = 0; i < operations.length; i++) {
+    for (let i = 0; i < this.operations.length; i++) {
       operators.push(
         <TouchableOpacity
-        key={operations[i]}
-        onPress={() => this.operate(operations[i])}>
-            <Text style={styles.operatorText}>{operations[i]}</Text>
+        key={this.operations[i]}
+        onPress={() => this.operate(this.operations[i])}>
+            <Text style={styles.operatorText}>{this.operations[i]}</Text>
         </TouchableOpacity>
         )
     }
