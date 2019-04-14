@@ -1,11 +1,42 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { black } from 'ansi-colors';
+import { Button, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 
 export default class App extends React.Component {
 
-  onPress() {
-    alert.alert(`You tapped ${e.target.value}`)
+  constructor() {
+    super()
+    this.state = {
+      result: '',
+      calculation: ''
+    }
+  }
+
+  calculateResult() {
+    const text = this.state.result
+    // parse the text 
+
+  }
+
+  onBtnPress(text) {
+    console.log(`You tapped ${text}`)
+    if (text == '=') {
+      return this.calculateResult(this.state.resultText)
+    }
+    this.setState({
+      result: this.state.result + text,
+      calculation: this.state.calculation + text
+    })
+  }
+
+  operate(operation) {
+    switch(operation) {
+      case 'DEL': 
+        let text = this.state.result.split('')
+        text.pop()
+        this.setState({
+          result: text.join('')
+        })
+    }
   }
 
   render() {
@@ -16,7 +47,10 @@ export default class App extends React.Component {
       let row = []
       for (let j = 0; j <3; j++) {
         row.push(
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity 
+            onPress={() => this.onBtnPress(nums[i][j])}
+            style={styles.btn}
+            key={nums[i][j]}>
             <Text style={styles.btnText}>{nums[i][j]}</Text>
           </TouchableOpacity>
         )
@@ -24,11 +58,13 @@ export default class App extends React.Component {
       rows.push(<View style={styles.row}>{row}</View>)
     }
 
-    let operations = ['+', '-', '*', '/']
+    let operations = ['DEL', '+', '-', '*', '/']
     let operators = []
     for (let i = 0; i < operations.length; i++) {
       operators.push(
-        <TouchableOpacity>
+        <TouchableOpacity
+        key={operations[i]}
+        onPress={() => this.operate(operations[i])}>
             <Text style={styles.operatorText}>{operations[i]}</Text>
         </TouchableOpacity>
         )
@@ -37,10 +73,10 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.result}>
-          <Text style={styles.resultText}>123</Text>
+          <Text style={styles.resultText}>{this.state.result}</Text>
         </View>
         <View style={styles.calculation}>
-          <Text style={styles.calculationText}>11*11</Text>
+          <Text style={styles.calculationText}>{this.state.calculation}</Text>
         </View>
         <View style={styles.buttons}>
           <View style={styles.numbers}>
@@ -72,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   btnText: {
-    fontSize: 25,
+    fontSize: 45,
     color: 'black',
   },
   result: {
